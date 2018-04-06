@@ -17,6 +17,7 @@ const totalCells = () => !GRID.length? 0 : GRID[0].length * GRID.length;
 //Enum for Column names.
 const ColEnum = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 const ROCK = '^';//symbol for rock
+const CURRENT = "~";//symbol for Current
 
 //lightCell returns the character in the GRID at the specified cell in form A1 - J10
 const lightCell = cell =>
@@ -29,8 +30,29 @@ const lightCell = cell =>
   return GRID[Row - 1][ColEnum.indexOf(Col)];
 };
 
+//compares cell to a character, returns true or false
+const compareCell = (cell, symbol) => 
+{
+  
+  const cellContent = lightCell(cell);
+  //console.log(cell);
+  //console.log(cellContent, symbol);
+  if(cellContent == symbol)
+  {
+    return true;
+  }
+  else
+    {
+      return false;
+    }
+  
+}
+
 //isRock returns "true" if the cell contains a rock("^"), else returns "false"
-const isRock = cell => { if( lightCell(cell) == "^") return "true"; else return "false";};
+const isRock = cell => compareCell(cell, ROCK);
+//isCurrent returns "true" if the cell contains a current("~"), else returns "false"
+const isCurrent = cell => compareCell(cell, CURRENT);
+
 
 //prints the GRID
 const printGrid = () => {
