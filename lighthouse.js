@@ -53,7 +53,16 @@ const isRock = cell => compareCell(cell, ROCK);
 //isCurrent returns "true" if the cell contains a current("~"), else returns "false"
 const isCurrent = cell => compareCell(cell, CURRENT);
 
+//lightRow returns specified row of GRID
+const lightRow = row => GRID[row - 1];
 
+//print every row of GRID
+const printGridLightRow = () =>{
+  console.log("printing Grid from lightRow");
+  for(let i = 1 ; i <= GRID.length; i++ ){
+    console.log(lightRow(i));
+  }
+}
 //prints the GRID
 const printGrid = () => {
   
@@ -78,7 +87,7 @@ const printGridLightCell = () => {
   console.log("  ABCDEFGHIJ");
   let rowStr = "";
   let rowNum ;
-  for(let i = 1; i <= 10; i++){
+  for(let i = 1; i <= GRID.length; i++){
     rowNum = i;
     rowStr  = rowNum.toString()  ;
     for (let col of ColEnum){
@@ -99,7 +108,7 @@ const printIsRock = () => {
   console.log("  ABCDEFGHIJ");
   let rowStr = "";
   let rowNum ;
-  for(let i = 1; i <= 10; i++){
+  for(let i = 1; i <= GRID.length; i++){
     rowNum = i;
     rowStr  = rowNum.toString()  ;
     for (let col of ColEnum){
