@@ -18,7 +18,14 @@ cconst gridSize = () => !numRows()? '0 x 0' : `${numRows()} x ${numCols()}`;
 const totalCells = () => !numRows()? 0 : numRows() * numCols();
 
 //Enum for Column names.
-const ColEnum = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+let ColEnum = [];
+for(let i = 0, len = numCols(); i < len; i++){
+  ColEnum.push(String.fromCharCode(65 + i));//65 is A
+}
+
+//const ColEnum = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+
+
 const ROCK = '^';//symbol for rock
 const CURRENT = "~";//symbol for Current
 
@@ -74,14 +81,14 @@ const lightColumn = col => {
 //print every row of GRID
 const printGridLightRow = () =>{
   console.log("printing Grid from lightRow");
-  for(let i = 1 ; i <= GRID.length; i++ ){
+  for(let i = 1, len = numRows() ; i <= len; i++ ){
     console.log(lightRow(i));
   }
 }
 //prints the GRID
 const printGrid = () => {
   
-  console.log("  ABCDEFGHIJ");
+  console.log("  " + ColEnum.join(''));
   let rowStr = "";
   let rowNum ;
   for(let row in GRID){
@@ -99,10 +106,10 @@ printGrid();
 //prints GRID but by using the lightCell function, test to make sure lightCell is returning every cell in grid correctly
 const printGridLightCell = () => {
   
-  console.log("  ABCDEFGHIJ");
+  console.log("  " + ColEnum.join(''));
   let rowStr = "";
   let rowNum ;
-  for(let i = 1; i <= GRID.length; i++){
+  for(let i = 1, len = numRows(); i <= len; i++){
     rowNum = i;
     rowStr  = rowNum.toString()  ;
     for (let col of ColEnum){
@@ -130,10 +137,10 @@ const printAllLightCol = () => {
 //prints out the GRID but with all true or false if has Rock, test to make sure isRock is returning correct for every cell
 const printIsRock = () => {
   
-  console.log("  ABCDEFGHIJ");
+  console.log("  " + ColEnum.join(''));
   let rowStr = "";
   let rowNum ;
-  for(let i = 1; i <= GRID.length; i++){
+  for(let i = 1, len = numRows(); i <= len; i++){
     rowNum = i;
     rowStr  = rowNum.toString()  ;
     for (let col of ColEnum){
