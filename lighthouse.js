@@ -10,9 +10,12 @@ const GRID = [
       ["", "^", "", "~", "~", "", "", "", "", ""],
       ["", "^", "", "", "~", "~", "", "", "", ""],
     ];
+
+const numRows = () => GRID.length;
+const numCols = () => !numRows()? 0 : GRID[0].length;
 	
-const gridSize = () => !GRID.length? '0 x 0' : `${GRID[0].length} x ${GRID.length}`;
-const totalCells = () => !GRID.length? 0 : GRID[0].length * GRID.length;
+cconst gridSize = () => !numRows()? '0 x 0' : `${numRows()} x ${numCols()}`;
+const totalCells = () => !numRows()? 0 : numRows() * numCols();
 
 //Enum for Column names.
 const ColEnum = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
@@ -56,6 +59,18 @@ const isCurrent = cell => compareCell(cell, CURRENT);
 //lightRow returns specified row of GRID
 const lightRow = row => GRID[row - 1];
 
+//lightRow returns array of cells in column col
+const lightColumn = col => {
+  
+  const colIndex = ColEnum.indexOf(col);
+  let colArray = [];
+  for(let row of GRID){
+    colArray.push(row[colIndex]);
+  }
+  //console.log(colArray);
+  return colArray;
+  
+}
 //print every row of GRID
 const printGridLightRow = () =>{
   console.log("printing Grid from lightRow");
@@ -101,6 +116,16 @@ const printGridLightCell = () => {
   }
 };
 printGridLightCell();
+
+//prints all Columns in GRID using lightCol
+const printAllLightCol = () => {
+  console.log("print all columns");
+  for(let col of ColEnum){
+    
+    console.log(col, lightColumn(col));
+  }
+  
+}
 
 //prints out the GRID but with all true or false if has Rock, test to make sure isRock is returning correct for every cell
 const printIsRock = () => {
