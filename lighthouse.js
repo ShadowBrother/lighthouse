@@ -36,6 +36,9 @@ const lightCell = cell =>
   const Col = cell.substr(0,1);//Grab the Col Letter(first character in the cell arg)
   const Row = cell.substr(1);//Grab the Row number(remaining character/s)
   
+  if(ColEnum.indexOf(Col) == -1) return false;//if Col is not in ColEnum, it must be an invalid column letter
+  if(Row < 1 || Row > numRows ) return false;//make sure Row is within bounds
+  
   //have to subtract 1 from Row number since GRID starts with index 1, use ColEnum to get index for Col
   return GRID[Row - 1][ColEnum.indexOf(Col)];
 };
