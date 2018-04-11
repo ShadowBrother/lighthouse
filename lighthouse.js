@@ -61,11 +61,12 @@ const compareCell = (cell, symbol) =>
   
 }
 
-//isRock returns "true" if the cell contains a rock("^"), else returns "false"
+//isRock returns true if the cell contains a rock("^"), else returns false
 const isRock = cell => compareCell(cell, ROCK);
-//isCurrent returns "true" if the cell contains a current("~"), else returns "false"
+//isCurrent returns true if the cell contains a current("~"), else returns false
 const isCurrent = cell => compareCell(cell, CURRENT);
-
+//isSage returns true if there is no rock or current in the given cell, else returns false
+const isSafe = cell => !isRock(cell) && !isCurrent(cell) ;
 //lightRow returns specified row of GRID
 const lightRow = row => GRID[row - 1];
 
