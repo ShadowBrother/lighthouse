@@ -14,7 +14,7 @@ const GRID = [
 const numRows = () => GRID.length;
 const numCols = () => !numRows()? 0 : GRID[0].length;
 	
-cconst gridSize = () => !numRows()? '0 x 0' : `${numRows()} x ${numCols()}`;
+const gridSize = () => !numRows()? '0 x 0' : `${numRows()} x ${numCols()}`;
 const totalCells = () => !numRows()? 0 : numRows() * numCols();
 
 //Enum for Column names.
@@ -37,7 +37,7 @@ const lightCell = cell =>
   const Row = cell.substr(1);//Grab the Row number(remaining character/s)
   
   if(ColEnum.indexOf(Col) == -1) return false;//if Col is not in ColEnum, it must be an invalid column letter
-  if(Row < 1 || Row > numRows ) return false;//make sure Row is within bounds
+  if(Row < 1 || Row > numRows() ) return false;//make sure Row is within bounds
   
   //have to subtract 1 from Row number since GRID starts with index 1, use ColEnum to get index for Col
   return GRID[Row - 1][ColEnum.indexOf(Col)];
@@ -82,6 +82,24 @@ const lightColumn = col => {
   return colArray;
   
 }
+
+//allRocks returns an array of all cells in GRID that contain rocks
+const allRocks = () =>{
+  let rockArray = [];
+  for(let i = 1 ; i <= numRows(); i++ ){
+    for(let j = 0; j < numCols(); j++){
+      let cell = ColEnum[j] + i.toString() ;
+      //console.log(cell);
+      if(isRock(cell)){
+        //console.log(`${cell} is a rock`);
+        rockArray.push(cell);
+      }
+    }
+  }
+  return rockArray;
+};
+
+
 //print every row of GRID
 const printGridLightRow = () =>{
   console.log("printing Grid from lightRow");
