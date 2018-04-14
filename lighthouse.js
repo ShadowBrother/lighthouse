@@ -81,23 +81,29 @@ const lightColumn = col => {
   //console.log(colArray);
   return colArray;
   
-}
+};
 
-//allRocks returns an array of all cells in GRID that contain rocks
-const allRocks = () =>{
-  let rockArray = [];
+//allSymbols(symbol) returns an array of all cells that contain given symbol
+const allSymbols = (symbol) =>{
+  let result = [];
   for(let i = 1 ; i <= numRows(); i++ ){
     for(let j = 0; j < numCols(); j++){
       let cell = ColEnum[j] + i.toString() ;
       //console.log(cell);
-      if(isRock(cell)){
-        //console.log(`${cell} is a rock`);
-        rockArray.push(cell);
+      //console.log(isRock(cell));
+      if(compareCell(cell, symbol)){
+        //console.log(`${cell} is ${symbol}`);
+        result.push(cell);
       }
     }
   }
-  return rockArray;
+  return result;
 };
+
+//allRocks returns an array of all cells containing rocks
+const allRocks = () => allSymbols(ROCK);
+//allCurrents returns an array of all cells containing currents
+const allCurrents = () => allSymbols(CURRENT);
 
 
 //print every row of GRID
