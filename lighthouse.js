@@ -104,7 +104,8 @@ const allSymbols = (symbol) =>{
 const allRocks = () => allSymbols(ROCK);
 //allCurrents returns an array of all cells containing currents
 const allCurrents = () => allSymbols(CURRENT);
-
+//firstRock returns the first rock in the GRID or undefined if no rocks
+const firstRock = () => allRocks().shift();
 
 //print every row of GRID
 const printGridLightRow = () =>{
