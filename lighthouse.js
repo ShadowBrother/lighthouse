@@ -106,6 +106,9 @@ const allRocks = () => allSymbols(ROCK);
 const allCurrents = () => allSymbols(CURRENT);
 //firstRock returns the first rock in the GRID or undefined if no rocks
 const firstRock = () => allRocks().shift();
+//firstCurrent returns the first current in the GRID or undefined if no currents
+const firstCurrent = () => allCurrents().shift();
+
 
 //print every row of GRID
 const printGridLightRow = () =>{
