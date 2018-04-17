@@ -11,11 +11,19 @@ const GRID = [
       ["", "^", "", "", "~", "~", "", "", "", ""],
     ];
 
+
+/*const GRID = [
+      ["^", "", "", "^", "", "", "", "", "", ""],
+      ["", "", "^", "", "~", "", "", "", "", ""]];
+*/
 const numRows = () => GRID.length;
 const numCols = () => !numRows()? 0 : GRID[0].length;
-	
-const gridSize = () => !numRows()? '0 x 0' : `${numRows()} x ${numCols()}`;
-const totalCells = () => !numRows()? 0 : numRows() * numCols();
+  
+const gridSize = () => !numRows()? '0 x 0' : `${numCols()} x ${numRows()}`;
+const totalCells = () => !numRows()? 0 : numCols() * numRows();
+
+console.log("Col,Row: ",numCols(),numRows());
+console.log("WxH: ",gridSize());
 
 //Enum for Column names.
 let ColEnum = [];
@@ -29,18 +37,42 @@ for(let i = 0, len = numCols(); i < len; i++){
 const ROCK = '^';//symbol for rock
 const CURRENT = "~";//symbol for Current
 
+//splitCell takes cell in 'A1' form, returns array [A,1]
+const splitCell = cell => [cell.substr(0,1),cell.substr(1)];
+
+//converts cell row number to GRID index
+const rowToIndex = row => row - 1;
+//converts cell col letter to GRID index
+const colToIndex = col => ColEnum.indexOf(col);
+
+//convert row index to row name
+const indexToRow = row => row + 1;
+//convert col index to col name
+const indexToCol = col => ColEnum[col] ;
+
+//convert cell to indexes ex. 'A1' => [0,0]
+const cellToIndexes = cell => {
+  const [col,row] = splitCell(cell) ;
+  return [colToIndex(col), rowToIndex(row)];
+}
+//convert col,row indexes to cell name
+const indexesToCell = colRowArray => `${indexToCol(colRowArray[0])}${indexToRow(colRowArray[1])}`;
+
+
 //lightCell returns the character in the GRID at the specified cell in form A1 - J10
 const lightCell = cell =>
 {
   
-  const Col = cell.substr(0,1);//Grab the Col Letter(first character in the cell arg)
-  const Row = cell.substr(1);//Grab the Row number(remaining character/s)
+  //const Col = cell.substr(0,1);//Grab the Col Letter(first character in the cell arg)
+  //const Row = cell.substr(1);//Grab the Row number(remaining character/s)
   
-  if(ColEnum.indexOf(Col) == -1) return false;//if Col is not in ColEnum, it must be an invalid column letter
-  if(Row < 1 || Row > numRows() ) return false;//make sure Row is within bounds
+  const [col, row] = cellToIndexes(cell);
   
-  //have to subtract 1 from Row number since GRID starts with index 1, use ColEnum to get index for Col
-  return GRID[Row - 1][ColEnum.indexOf(Col)];
+  if( col == -1) return false;//if col is not in ColEnum, it must be an invalid column letter
+  if(row < 0 || row >= numRows() ) return false;//make sure row is within bounds
+  
+  
+  return GRID[row][col];
 };
 
 //compares cell to a character, returns true or false
@@ -68,12 +100,12 @@ const isCurrent = cell => compareCell(cell, CURRENT);
 //isSage returns true if there is no rock or current in the given cell, else returns false
 const isSafe = cell => !isRock(cell) && !isCurrent(cell) ;
 //lightRow returns specified row of GRID
-const lightRow = row => GRID[row - 1];
+const lightRow = row => GRID[rowToIndex(row)];
 
 //lightRow returns array of cells in column col
 const lightColumn = col => {
   
-  const colIndex = ColEnum.indexOf(col);
+  const colIndex = colToIndex(col);
   let colArray = [];
   for(let row of GRID){
     colArray.push(row[colIndex]);
@@ -86,9 +118,9 @@ const lightColumn = col => {
 //allSymbols(symbol) returns an array of all cells that contain given symbol
 const allSymbols = (symbol) =>{
   let result = [];
-  for(let i = 1 ; i <= numRows(); i++ ){
+  for(let i = 0 ; i < numRows(); i++ ){
     for(let j = 0; j < numCols(); j++){
-      let cell = ColEnum[j] + i.toString() ;
+      let cell = indexesToCell([j,i]);
       //console.log(cell);
       //console.log(isRock(cell));
       if(compareCell(cell, symbol)){
@@ -109,6 +141,71 @@ const firstRock = () => allRocks().shift();
 //firstCurrent returns the first current in the GRID or undefined if no currents
 const firstCurrent = () => allCurrents().shift();
 
+//getOrthogonalNeighbors(cell) returns an array of all cells orthogonally adjacent to cell
+const getOrthogonalNeighbors = cell => {
+  
+  let neighbors = [] ;
+  let [col, row] = cellToIndexes(cell);
+  //above
+  if(row > 0) neighbors.push(indexesToCell([col,row - 1]));
+  //below
+  if(row < numRows() - 1) neighbors.push(indexesToCell([col, row + 1]));
+  //left
+  if(col > 0) neighbors.push(indexesToCell([col - 1, row]));
+  //right
+  if(col < numCols() - 1) neighbors.push(indexesToCell([col + 1, row]));
+  
+  return neighbors;
+                             
+  
+};
+
+console.log(getOrthogonalNeighbors('E4'));
+
+//getDiagonalNeighbors(cell) returns an array of cells diagonally adjacent to cell
+const getDiagonalNeighbors = cell => {
+  
+  let neighbors = [] ;
+  let [col, row] = cellToIndexes(cell) ;
+  
+  //above, left
+  if((row > 0) && (col > 0)) neighbors.push(indexesToCell([col - 1, row - 1]));
+  //above, right
+  if((row > 0) && (col < numCols() - 1)) neighbors.push(indexesToCell([col + 1, row - 1]));
+  //below, right
+  if((row < numRows() - 1) && (col < numCols() - 1)) neighbors.push(indexesToCell([col + 1, row + 1]));
+  //below,left
+  if((row < numRows() - 1) && (col > 0)) neighbors.push(indexesToCell([col - 1, row + 1]));
+  
+  return neighbors;
+  
+};
+
+console.log(getDiagonalNeighbors('E4'));
+
+//getAllNeighbors returns an array of cells orthogonally and diagonally adjacent to cellToIndexes
+const getAllNeighbors = cell => getDiagonalNeighbors(cell).concat(getOrthogonalNeighbors(cell));
+
+console.log(getAllNeighbors('E4'));
+
+//isDangerous(cell) returns true if there is a rock or a strong current in it, OR in the cells immediately above, below, left, or right of it.
+const isDangerous = cell => {
+  
+  const neighbors = getOrthogonalNeighbors(cell) ;
+  
+  //test if cell is safe, if not return true
+  if(!isSafe(cell)) return true ;
+  //cell is safe, but need to check neighboring cells
+  for(let neighbor of neighbors){
+    if(!isSafe(neighbor)) return true;//if any neighboring cell is not safe, return true
+  }
+  return false;//neither the cell, nor any of it's orthogonal neighbors are dangerous
+  
+}
+
+console.log("isDangerous('E4')[true]: ", isDangerous('E4'));
+console.log("isDangerous('B9')[true]: ", isDangerous('B9'));
+console.log("isDangerous('I6')[false]: ", isDangerous('I6'));
 
 //print every row of GRID
 const printGridLightRow = () =>{
