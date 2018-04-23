@@ -207,6 +207,43 @@ console.log("isDangerous('E4')[true]: ", isDangerous('E4'));
 console.log("isDangerous('B9')[true]: ", isDangerous('B9'));
 console.log("isDangerous('I6')[false]: ", isDangerous('I6'));
 
+
+
+//numSurroundSafeCells(cell) returns number of safe cells around cell
+const numSurroundSafeCells = cell => {
+  
+  const neighbors = getAllNeighbors(cell);
+  let count = 0 ;
+  for (let neighbor of neighbors){
+    if(isSafe(neighbor)) count++;
+  }
+  return count;
+  
+};
+
+//distressBeacon(cell) takes a cell, and returns a safe cell 1 cell away
+const distressBeacon = cell => {
+  
+  const neighbors = getAllNeighbors(cell);
+  let safetyRankings = [];
+  for(let neighbor of neighbors){
+    
+    if(isSafe(neighbor)) safetyRankings.push([neighbor, numSurroundSafeCells(neighbor)]);
+    
+  }
+  //console.log(safetyRankings);
+  let sortedRankings = safetyRankings.sort((a,b) => {
+      if(a[1] < b[1]) return 1;//want highest number sorted first
+      if(a[1] > b[1]) return - 1;
+      return 0;
+    });
+    //console.log(sortedRankings);
+    return sortedRankings.shift().shift();//take safest cell
+  
+};
+
+
+
 //print every row of GRID
 const printGridLightRow = () =>{
   console.log("printing Grid from lightRow");
