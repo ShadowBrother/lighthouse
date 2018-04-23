@@ -242,6 +242,15 @@ const distressBeacon = cell => {
   
 };
 
+//setCell(cell, symbol) sets cell to symbol
+const setCell = (cell, symbol) => {
+  const [col, row] = cellToIndexes(cell);
+  GRID[row][col] = symbol;
+}
+//addRock(cell) sets cell to ROCK("^")
+const addRock = cell => setCell(cell, ROCK);
+
+addRock('J9');
 
 
 //print every row of GRID
