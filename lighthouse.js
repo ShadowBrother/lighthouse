@@ -252,7 +252,24 @@ const addRock = cell => setCell(cell, ROCK);
 
 addRock('J9');
 
+//rounding function from //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round
 
+function round(number, precision) {
+  var shift = function (number, precision, reverseShift) {
+    if (reverseShift) {
+      precision = -precision;
+    }  
+    var numArray = ("" + number).split("e");
+    return +(numArray[0] + "e" + (numArray[1] ? (+numArray[1] + precision) : precision));
+  };
+  return shift(Math.round(shift(number, precision, false)), precision, true);
+}
+
+//percentageReport() returns array of percentage of grid that is rocks and percentage that has strong currents
+const percentageReport = () => {
+  
+  return [round(allRocks().length/totalCells()*100, 2), round(allCurrents().length/totalCells()*100,2)];
+}
 //print every row of GRID
 const printGridLightRow = () =>{
   console.log("printing Grid from lightRow");
