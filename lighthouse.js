@@ -271,6 +271,16 @@ const percentageReport = () => {
   //return [round(allRocks().length/totalCells()*100, 2), round(allCurrents().length/totalCells()*100,2)];
   return [allSymbols("").length, allRocks().length, allCurrents().length];
 }
+
+//flattens GRID to one dimensional array
+const flattenGrid = () => GRID.reduce((acc, cur) => acc.concat(cur));
+
+
+//returns the number of safe cells
+const safetyReport = () =>  `${round((flattenGrid().map(cell => (cell == "")?1:0).reduce((acc,cur) => acc + cur,0))/totalCells() * 100,1)}%` ;
+
+
+
 //print every row of GRID
 const printGridLightRow = () =>{
   console.log("printing Grid from lightRow");
