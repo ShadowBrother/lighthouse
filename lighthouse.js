@@ -265,10 +265,11 @@ function round(number, precision) {
   return shift(Math.round(shift(number, precision, false)), precision, true);
 }
 
-//percentageReport() returns array of percentage of grid that is rocks and percentage that has strong currents
+//percentageReport() returns array of the total number of open cells, cells with rocks, cells with currents
 const percentageReport = () => {
   
-  return [round(allRocks().length/totalCells()*100, 2), round(allCurrents().length/totalCells()*100,2)];
+  //return [round(allRocks().length/totalCells()*100, 2), round(allCurrents().length/totalCells()*100,2)];
+  return [allSymbols("").length, allRocks().length, allCurrents().length];
 }
 //print every row of GRID
 const printGridLightRow = () =>{
