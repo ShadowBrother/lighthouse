@@ -279,7 +279,15 @@ const flattenGrid = () => GRID.reduce((acc, cur) => acc.concat(cur));
 //returns the number of safe cells
 const safetyReport = () =>  `${round((flattenGrid().map(cell => (cell == "")?1:0).reduce((acc,cur) => acc + cur,0))/totalCells() * 100,1)}%` ;
 
-
+//calcDistance takes 2 cells and returns the distance between them
+const calcDistance = (cell1, cell2) =>{
+  
+  const [x1, y1] = cellToIndexes(cell1);
+  const [x2, y2] = cellToIndexes(cell2);
+  
+  return round(Math.pow(Math.pow(x2-x1,2) + Math.pow(y2-y1,2),1/2),2);
+  
+}
 
 //print every row of GRID
 const printGridLightRow = () =>{
