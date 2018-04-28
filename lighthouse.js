@@ -289,6 +289,20 @@ const calcDistance = (cell1, cell2) =>{
   
 }
 
+//evaluates a route return false if any cells in route are rocks
+const evaluateRoute = route => {
+  
+  //return false if any cells in route are rocks or if there are more than 2 strong currents in route
+  if(route.reduce((acc, cur) => { return acc || isRock(cur)}, false)) return false;
+    
+   
+  //return false if more than 2 strong currents in route
+  if(route.reduce((acc, cur) =>{return acc + (isCurrent(cur)?1:0)}, 0) > 2) return false;
+  return true;
+  
+  
+};
+
 //print every row of GRID
 const printGridLightRow = () =>{
   console.log("printing Grid from lightRow");
